@@ -7,7 +7,10 @@ public class User {
     private String password;
     private int age;
 
-    public User(Long id,String name, String lastname, String username, String password, int age) {
+    public User() {
+    }
+
+    public User(Long id, String name, String lastname, String username, String password, int age) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;

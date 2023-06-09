@@ -5,11 +5,11 @@ public interface UserService {
 
     void create(User user) throws SQLException;
 
-    void update(User user);
+    void update(User user) throws SQLException;
 
-    User get(Long id);
+    User get(long id) throws SQLException;
 
-    List<User> getAll();
+    List<User> getAll() throws SQLException;
 
-    void delete(Long id);
+    void delete(Long id) throws SQLException;
 }
