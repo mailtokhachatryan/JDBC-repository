@@ -1,6 +1,8 @@
+package model;
+
 public class User {
 
-    Long id;
+    private Long id;
     private String name;
     private String lastname;
     private String username;
@@ -8,6 +10,7 @@ public class User {
     private int age;
 
     public User() {
+
     }
 
     public User(Long id, String name, String lastname, String username, String password, int age) {
