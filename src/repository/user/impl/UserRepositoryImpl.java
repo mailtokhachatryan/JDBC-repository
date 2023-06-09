@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
         );
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getLastname());
-        preparedStatement.setString(3, user.getUsername());
+        preparedStatement.setString(3, user.getEmail());
         preparedStatement.setString(4, user.getPassword());
         preparedStatement.setInt(5, user.getAge());
 
@@ -61,12 +61,10 @@ public class UserRepositoryImpl implements UserRepository {
 
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getLastname());
-        preparedStatement.setString(3, user.getUsername());
+        preparedStatement.setString(3, user.getEmail());
         preparedStatement.setString(4, user.getPassword());
         preparedStatement.setInt(5, user.getAge());
         preparedStatement.setLong(6, user.getId());
-
-
     }
 
     @Override
@@ -75,16 +73,9 @@ public class UserRepositoryImpl implements UserRepository {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from users WHERE id = ?");
         preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
-
         while (resultSet.next()) {
-            user.setId(resultSet.getLong("id"));
-            user.setName(resultSet.getString("name"));
-            user.setLastname(resultSet.getString("lastname"));
-            user.setUsername(resultSet.getString("username"));
-            user.setPassword(resultSet.getString("password"));
-            user.setAge(resultSet.getInt("age"));
+            setUserFields(user, resultSet);
         }
-
         resultSet.close();
         preparedStatement.close();
         return user;
@@ -93,25 +84,24 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() throws SQLException {
         List<User> usersList = new ArrayList<>();
-
         ResultSet resultSet = connection.createStatement().executeQuery("SELECT * from users");
-
-        while (resultSet.next()) {
-            User user = new User();
-            user.setId(resultSet.getLong("id"));
-            user.setName(resultSet.getString("name"));
-            user.setLastname(resultSet.getString("lastname"));
-            user.setUsername(resultSet.getString("username"));
-            user.setPassword(resultSet.getString("password"));
-            user.setAge(resultSet.getInt("age"));
-
-            usersList.add(user);
-        }
-
+        addUserToListFromResultSet(usersList, resultSet);
         return usersList;
     }
 
-    // CRUD
+
+    @Override
+    public List<User> findUsersByName(String name) throws SQLException {
+
+        List<User> users = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM users WHERE lower(name) LIKE lower(concat('%',?,'%'))"
+        );
+        preparedStatement.setString(1, name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        addUserToListFromResultSet(users, resultSet);
+        return users;
+    }
 
     @Override
     public void delete(Long id) throws SQLException {
@@ -122,5 +112,22 @@ public class UserRepositoryImpl implements UserRepository {
         preparedStatement.executeUpdate();
 
         preparedStatement.close();
+    }
+
+    private void setUserFields(User user, ResultSet resultSet) throws SQLException {
+        user.setId(resultSet.getLong("id"));
+        user.setName(resultSet.getString("name"));
+        user.setLastname(resultSet.getString("lastname"));
+        user.setEmail(resultSet.getString("username"));
+        user.setPassword(resultSet.getString("password"));
+        user.setAge(resultSet.getInt("age"));
+    }
+
+    private void addUserToListFromResultSet(List<User> usersList, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            User user = new User();
+            setUserFields(user, resultSet);
+            usersList.add(user);
+        }
     }
 }

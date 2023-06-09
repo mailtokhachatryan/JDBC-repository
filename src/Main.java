@@ -4,6 +4,7 @@ import repository.user.impl.UserRepositoryImpl;
 import util.DatabaseConnection;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
@@ -17,10 +18,14 @@ public class Main {
         User user3 = new User(3L, "Eduard", "Parunakyan", "username3", "pass", 23);
 
 //        userRepo.create(user);
-        userRepo.create(user2);
-        userRepo.create(user3);
+//        userRepo.create(user2);
+//        userRepo.create(user3);
 
-        User user1 = userRepo.get(1L);
-        System.out.println(user1.getName());
+        List<User> a = userRepo.findUsersByName("A");
+
+        System.out.println(a);
+
+//        User user1 = userRepo.get(1L);
+//        System.out.println(user1.getName());
     }
 }

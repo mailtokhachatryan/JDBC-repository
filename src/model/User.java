@@ -5,7 +5,7 @@ public class User {
     private Long id;
     private String name;
     private String lastname;
-    private String username;
+    private String email;
     private String password;
     private int age;
 
@@ -13,11 +13,11 @@ public class User {
 
     }
 
-    public User(Long id, String name, String lastname, String username, String password, int age) {
+    public User(Long id, String name, String lastname, String email, String password, int age) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.age = age;
     }
@@ -46,12 +46,12 @@ public class User {
         this.lastname = lastname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -68,5 +68,17 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

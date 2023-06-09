@@ -15,6 +15,8 @@ public interface UserRepository {
 
     List<User> getAll() throws SQLException;
 
+    List<User> findUsersByName(String name) throws SQLException;
+
     void delete(Long id) throws SQLException;
 
 }
